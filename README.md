@@ -9,7 +9,7 @@ Jason <idea_wj@163.com>
 
 ## 安装
 ```shell
-go get github.com/jason-wj/csvreader
+go get github.com/bitxx/csvreader
 ```
 
 ## 简单用法
