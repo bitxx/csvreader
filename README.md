@@ -1,16 +1,11 @@
 # csvreader
 Jason <idea_wj@163.com>
 简单的csv格式文件解析到`struct`工具
-
-2022-01-27 注：为满足自身需要，在 [原作者：zhnxin 项目](https://github.com/zhnxin/csvreader) 基础上做了改动：
+为满足自身需要，在 [原作者：zhnxin 项目](https://github.com/zhnxin/csvreader) 基础上做了改动：
 1. 当header中字段首尾存在空格时，去除空格
 2. value值，去除开头和结尾的空格
 3. header中的字段必须全为小写，结构体随意，但名称必须和header中字段名称保持一致
-
-## 安装
-```shell
-go get github.com/bitxx/csvreader
-```
+4. 新增csv文件写入功能
 
 ## 简单用法
 
@@ -34,7 +29,7 @@ _ = csvreader.New().UnMarshalFile("file.csv",&infos)
 body,_ := json.Marshal(infos)
 fmt.Println(string(body))
 
-//point slice
+//指针 point slice
 infos = []*Info{}
 _ = csvreader.New().UnMarshalFile("file.csv",&infos)
 body,_ := json.Marshal(infos)
@@ -45,6 +40,20 @@ NOTE: 如果 *csv* 文件首行不包含header，可以使用 *WithHeader([]stri
 
 ```go
 _ = csvreader.New().WithHeader([]string{"hostname","ip"}).UnMarshalFile("file.csv",&infos)
+```
+
+csv文件生成：
+```go
+data := [][]string{
+    {"Name", "Age", "City"}, // CSV 的表头
+    {"Alice", "30", "New York"},
+    {"Bob", "25", "San Francisco"},
+    {"Charlie", "35", "Los Angeles"},
+}
+err := WirteAndSave(data, "./test.csv")
+if err != nil {
+    fmt.Println(err)
+}
 ```
 
 ## 自定义parster

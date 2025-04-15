@@ -1,11 +1,9 @@
-package csvreader_test
+package csvreader
 
 import (
 	"encoding/json"
 	"fmt"
 	"testing"
-
-	"github.com/bitxx/csvreader"
 )
 
 type testStruct struct {
@@ -37,14 +35,14 @@ func (c *CustomeType) FromString(str string) error {
 
 func TestBase(t *testing.T) {
 	var infos []Info
-	_ = csvreader.New().UnMarshalFile("ip.csv", &infos)
+	_ = New().UnMarshalFile("ip.csv", &infos)
 	body, _ := json.Marshal(infos)
 	fmt.Println(string(body))
 }
 
 func TestSnakeName(t *testing.T) {
 	bean := []testStruct{}
-	if err := csvreader.New().
+	if err := New().
 		WithHeader([]string{"name", "user_name", "id", "enable"}).
 		UnMarshalBytes([]byte("zhengxin,zhnxin,0,false\nxinzheng,zhnxin,1,true"),
 			&bean); err != nil {
@@ -56,7 +54,7 @@ func TestSnakeName(t *testing.T) {
 
 func TestLowerName(t *testing.T) {
 	bean := []*testStruct{}
-	if err := csvreader.New().
+	if err := New().
 		WithHeader([]string{"NAME", "USERNAME", "ID", "ENABLE"}).
 		UnMarshalBytes([]byte("zhengxin,zhnxin,0,false\nxinzheng,zhnxin,1,true"),
 			&bean); err != nil {
@@ -68,7 +66,7 @@ func TestLowerName(t *testing.T) {
 
 func TestCustom(t *testing.T) {
 	bean := []*testStruct{}
-	if err := csvreader.New().
+	if err := New().
 		WithHeader([]string{"NAME", "USERNAME", "type", "ENABLE"}).
 		UnMarshalBytes([]byte("zhengxin,zhnxin,udp,false\nxinzheng,zhnxin,tcp,true"),
 			&bean); err != nil {
@@ -76,4 +74,17 @@ func TestCustom(t *testing.T) {
 	}
 	b, _ := json.Marshal(bean)
 	t.Log(string(b))
+}
+
+func TestWrite(t *testing.T) {
+	data := [][]string{
+		{"Name", "Age", "City"}, // CSV 的表头
+		{"Alice", "30", "New York"},
+		{"Bob", "25", "San Francisco"},
+		{"Charlie", "35", "Los Angeles"},
+	}
+	err := WirteAndSave(data, "./test.csv")
+	if err != nil {
+		fmt.Println(err)
+	}
 }
