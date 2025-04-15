@@ -1,5 +1,4 @@
 # csvreader
-Jason <idea_wj@163.com>
 简单的csv格式文件解析到`struct`工具
 为满足自身需要，在 [原作者：zhnxin 项目](https://github.com/zhnxin/csvreader) 基础上做了改动：
 1. 当header中字段首尾存在空格时，去除空格
@@ -101,4 +100,3 @@ switch strings.ToLower(protocol){
     return nil
 }
 ```
-另外一个例子 reader_test.go TestCustom
